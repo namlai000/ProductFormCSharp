@@ -107,6 +107,7 @@ namespace ProductForm
                 r.CreateCells(dataGridView1);
                 r.SetValues(txtCode.Text, txtName.Text, txtPrice.Text, txtQuantity.Text, txtManufacturer.Text);
                 dataGridView1.Rows.Add(r);
+                cbFilter.Items.Add(txtManufacturer.Text);
             }
             catch (Exception)
             {
@@ -123,6 +124,20 @@ namespace ProductForm
             {
                 DataGridViewRow r = dataGridView1.Rows[i];
                 if (r.Cells[1].Value.ToString().Contains(txtSearch.Text))
+                {
+                    form.ProductInfo(r.Cells[0].Value.ToString(), r.Cells[1].Value.ToString(), r.Cells[2].Value.ToString(), r.Cells[3].Value.ToString(), r.Cells[4].Value.ToString());
+                }
+            }
+            form.ShowDialog();
+        }
+
+        private void SearchByMaunufacturer()
+        {
+            SearchResult form = new SearchResult();
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                DataGridViewRow r = dataGridView1.Rows[i];
+                if (r.Cells[4].Value.ToString().Contains(cbFilter.Text))
                 {
                     form.ProductInfo(r.Cells[0].Value.ToString(), r.Cells[1].Value.ToString(), r.Cells[2].Value.ToString(), r.Cells[3].Value.ToString(), r.Cells[4].Value.ToString());
                 }
@@ -201,6 +216,7 @@ namespace ProductForm
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
+            cbFilter.Items.Clear();
             StreamReader sr = new StreamReader("products.txt");
             dataGridView1.Rows.Clear();
             string input = null;
@@ -211,6 +227,7 @@ namespace ProductForm
                 r.CreateCells(dataGridView1);
                 r.SetValues(rows[0], rows[1], rows[2], rows[3], rows[4]);
                 dataGridView1.Rows.Add(r);
+                cbFilter.Items.Add(rows[4]);
             }
             sr.Close();
             MessageBox.Show("Loaded Successful");
@@ -219,6 +236,11 @@ namespace ProductForm
         private void btnSearch_Click(object sender, EventArgs e)
         {
             SearchByName();
+        }
+
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+            SearchByMaunufacturer();
         }
     }
 }
