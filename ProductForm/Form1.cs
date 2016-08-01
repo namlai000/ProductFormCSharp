@@ -236,8 +236,7 @@ namespace ProductForm
                         cbFilter.Items.Add(rows[4]);
                     } else
                     {
-                        MessageBox.Show("Line " + i + " has caused error");
-                        break;
+                        MessageBox.Show("Line " + i + " has caused error, skipped!");
                     }
                 }
                 sr.Close();
