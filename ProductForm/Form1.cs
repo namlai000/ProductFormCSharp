@@ -217,20 +217,36 @@ namespace ProductForm
         private void btnLoad_Click(object sender, EventArgs e)
         {
             cbFilter.Items.Clear();
-            StreamReader sr = new StreamReader("products.txt");
-            dataGridView1.Rows.Clear();
-            string input = null;
-            while ((input = sr.ReadLine()) != null)
+            try
             {
-                string[] rows = input.Split(';');
-                DataGridViewRow r = new DataGridViewRow();
-                r.CreateCells(dataGridView1);
-                r.SetValues(rows[0], rows[1], rows[2], rows[3], rows[4]);
-                dataGridView1.Rows.Add(r);
-                cbFilter.Items.Add(rows[4]);
+                StreamReader sr = new StreamReader("products.txt");
+                dataGridView1.Rows.Clear();
+                string input = null;
+                int i = 0;
+                while ((input = sr.ReadLine()) != null)
+                {
+                    i++;
+                    string[] rows = input.Split(';');
+                    if (rows.Length == 5)
+                    {
+                        DataGridViewRow r = new DataGridViewRow();
+                        r.CreateCells(dataGridView1);
+                        r.SetValues(rows[0], rows[1], rows[2], rows[3], rows[4]);
+                        dataGridView1.Rows.Add(r);
+                        cbFilter.Items.Add(rows[4]);
+                    } else
+                    {
+                        MessageBox.Show("Line " + i + " has caused error");
+                        break;
+                    }
+                }
+                sr.Close();
+                MessageBox.Show("Loaded Successful");
+            } catch (Exception)
+            {
+                MessageBox.Show("File Not Found");
             }
-            sr.Close();
-            MessageBox.Show("Loaded Successful");
+            
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
